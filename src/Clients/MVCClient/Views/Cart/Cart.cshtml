@@ -1,0 +1,97 @@
+﻿@{
+	if (ViewBag.Result["succeeded"] == false)
+	{
+		if (ViewBag.Result["statusCode"] == 404)
+		{
+
+			<div class="row justify-content-center mb-5">
+				<div class="card bg-dark border border-light">
+					<div class="card-body">
+						<hr class="bg-white" />
+						<p class="text-white text-center fs-4">There are not products in your shopping cart</p>
+					</div>
+					<img src="/Images/SadFace.png">
+				</div>
+			</div>
+		}
+		else
+		{
+			<script>
+				Swal.fire({
+					position: 'top-center',
+					background: 'black',
+					icon: 'error',
+					title: 'Error',
+					text: '@ViewBag.Result["title"]',
+					customClass: {
+						title: 'text-white',
+						text: 'text-white'
+					}
+				})
+			</script>
+		}
+	}
+	else
+	{
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+	<path fill="#000b76" fill-opacity="1" d="M0,160L120,138.7C240,117,480,75,720,74.7C960,75,1200,117,1320,138.7L1440,160L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path>
+</svg>
+		<div class="container py-5">
+
+			<!-- For demo purpose -->
+		<div class="row text-center text-white mb-5">
+				<div class="col-lg-7 mx-auto">
+					<h1 class="display-4">Your shopping Cart</h1>
+				</div>
+			</div>
+			<!-- End -->
+
+		<div class="row">
+				<div class="col-lg-8 mx-auto">
+
+					<!-- List group-->
+				<ul class="list-group shadow">
+
+						@{
+							foreach (var item in ViewBag.Result["content"])
+							{
+								<li class="list-group-item bg-dark text-white">
+									<!-- Custom content-->
+									<div class="media align-items-lg-center flex-column flex-lg-row p-3">
+										<div class="media-body order-2 order-lg-1">
+											<div class="d-flex align-items-center justify-content-between mt-1">
+												<h5 class="mt-0 font-weight-bold mb-2">@item["name"]</h5>
+												<button class="btn btn-small btn-danger" onClick="deleteProduct('@item["id"]')">X</button>
+											</div>
+											<div><label>Amount</label></div>
+											<input onchange="changeTotal('@item["id"]','@item["price"]')"  value="@item["amount"]" type="number" class="bg-dark text-white" min="1" id="amount-@item["id"]"/>
+											@{
+												decimal total = item["price"]*item["amount"];
+												<div class="mt-3"><p id="total-@item["id"]">Total: @total</p></div>
+											}
+										</div><img src="@item["image"]" alt="Generic placeholder image" width="300" class="ml-lg-5 order-1 order-lg-2">
+										<div class="mt-4"><button onclick="buy('@item["id"]','@item["price"]')" class="btn btn-outline-light btn-lg">Buy</button></div>
+									</div>
+									<!-- End -->
+								</li>
+
+								<hr class="bg-white" />
+							}
+						}
+
+
+						<!-- list group item-->
+
+
+				</ul>
+					<!-- End -->
+			</div>
+			</div>
+		</div>
+<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320">
+	<path fill="#000b76" fill-opacity="1" d="M0,192L120,202.7C240,213,480,235,720,229.3C960,224,1200,192,1320,176L1440,160L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+</svg>
+	}
+}
+
+<script src="/js/cart.js"></script>
