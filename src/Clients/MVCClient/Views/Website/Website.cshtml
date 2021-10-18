@@ -1,0 +1,101 @@
+﻿
+<header class="page-header bg-dark mt-3">
+	<div class="container pt-3 overflow-hidden">
+
+		<div class="row align-items-center justify-content-center">
+			<div class="col-md-6">
+				<h1 class="text-white">@ViewBag.Website["name"]</h1>
+				<p class="fs-4 text-white">
+					@ViewBag.Website["description"]
+				</p>
+			</div>
+			<div class="col-md-6">
+				<img src="@ViewBag.Website["image"]" alt="header image" />
+			</div>
+		</div>
+		<hr class="bg-white" />
+
+		@if (ViewBag.Website["lat"] != 0 && ViewBag.Website["lng"] != 0)
+		{
+			<div class="row align-items-center justify-content-center">
+				<h1 class="text-white">Location</h1>
+				<div id="map" style="width:100%;height:400px;"></div>
+			</div>
+
+		}
+
+	</div>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#000b76" fill-opacity="1" d="M0,192L120,202.7C240,213,480,235,720,229.3C960,224,1200,192,1320,176L1440,160L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path></svg>
+</header>
+
+
+<section class="feature bg-dark">
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#273036" fill-opacity="1" d="M0,160L120,138.7C240,117,480,75,720,74.7C960,75,1200,117,1320,138.7L1440,160L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path></svg>
+
+	<div class="container mb-4">
+		<div class="row align-items-center justify-content-center">
+			<div class="col">
+				<label class="sr-only fs-4 text-white">Product Categories</label>
+				<select id="categories" class="form-control bg-dark text-white"></select>
+			</div>
+			<div class="col">
+				<label class="sr-only fs-4 text-white">Order by</label>
+				<select id="orderBy" class="form-control bg-dark text-white">
+					<option value="cheap">Cheapest to most expensive</option>
+					<option value="expensive">Most expensive to cheapest</option>
+					<option value="name">Name</option>
+				</select>
+			</div>
+			<div class="col">
+				<label class="sr-only fs-4 text-white">Size</label>
+				<select id="size" class="form-control bg-dark text-white">
+					<option value="5">5</option>
+					<option value="10">10</option>
+					<option value="All">All</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class=container>
+		<hr class="bg-white"/>
+	</div>
+
+		<div class="container mb-4">
+    		<div class="row row-cols-1 row-cols-md-3 g-4" id="productsContainer">
+             
+            </div>
+    	</div>
+	
+ 
+	<div class="container mb-4">
+		<hr class="bg-white"/>
+	</div>
+
+	<div class="container mb-4">
+		<div class="row">			
+			<div class="col-md-4">
+				<div class="row justify-content-start">
+					<button id="btnPrevious"><i class="bi bi-arrow-left-circle-fill"></i></button>
+				</div>
+			</div>
+			<div class="col-md-4 justify-content-center">
+				<div class="row justify-content-center">
+					<p id="index" class="text-white text-center"></p>
+				</div>
+			</div>
+			<div class="col-md-4 justify-content-end">
+				<div class="row justify-content-end">
+					<button id="btnNext"><i class="bi bi-arrow-right-circle-fill"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	 
+	<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320"><path fill="#000b76" fill-opacity="1" d="M0,192L120,202.7C240,213,480,235,720,229.3C960,224,1200,192,1320,176L1440,160L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path></svg>
+</section>
+ 
+
+
+<script id="website" lat="@ViewBag.Website["lat"]" lng="@ViewBag.Website["lng"]" websiteId="@ViewBag.Website["id"]" src="/js/website.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu23M7yYmFTx871zv8EjuRDoHJoCYBJ3M&callback=init"></script>
