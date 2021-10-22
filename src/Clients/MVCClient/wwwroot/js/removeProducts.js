@@ -7,7 +7,7 @@
             websites.removeChild(websites.firstChild);
         }
 
-        const result = await fetch("https://localhost:9000/v1/Websites");
+        const result = await fetch("https://localhost:9000/v1/Websites/name");
 
         const response = await result.json();
 

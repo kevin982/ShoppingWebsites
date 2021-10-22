@@ -1,15 +1,13 @@
 ﻿let indexesCount = 1;
 let currentIndex = 1;
 
-
-function init() {
+function init(position) {
 
     try {
-        const position = { lat: parseFloat(document.getElementById("website").getAttribute("lat")), lng: parseFloat(document.getElementById("website").getAttribute("lng"))};
 
         map = new google.maps.Map(document.getElementById("map"), {
             center: position,
-            zoom: 12,
+            zoom: 15,
             styles: [{
                 "featureType": "all",
                 "elementType": "labels.text.fill",
@@ -215,105 +213,13 @@ function init() {
     }
 }
 
-const addProductCategoriesAsync = async () => {
-    try {
-
-        const websiteId = document.getElementById("website").getAttribute("websiteId");
-
-        const categories = document.getElementById("categories");
-
-        const result = await fetch(`https://localhost:9000/v1/ProductCategories/${websiteId}`);
-
-        const response = await result.json();
-
-        if (!response.succeeded && response.statusCode !== 404) throw new Error(response.title);
-
-        if (response.statusCode === 404) {
-            let option = document.createElement("option");
-            option.setAttribute("value", "00000000-0000-0000-0000-000000000000");
-            option.textContent = "Without product categories";
-            categories.appendChild(option);
-            return;
-        }
-
-        const allCategoriesOption = document.createElement("option");
-        allCategoriesOption.className = "text-white"
-        allCategoriesOption.setAttribute("value", "00000000-0000-0000-0000-000000000000");
-        allCategoriesOption.textContent = "All";
-
-        categories.append(allCategoriesOption);
-
-
-        for (let i = 0; i < response.content.length; i++) {
-            const option = document.createElement("option");
-            option.className = "text-white"
-            option.setAttribute("value", response.content[i].categoryId);
-            option.textContent = response.content[i].categoryName;
-
-            categories.append(option);
-        }
-
-    } catch (e) {
-        throw e;
-    }
-}
-
-const getProducts = async() => {
-
-    try {
-
-        const categoryId = document.getElementById("categories").options[document.getElementById("categories").selectedIndex].value;
-        const orderBy = document.getElementById("orderBy").options[document.getElementById("orderBy").selectedIndex].value;
-        const size = document.getElementById("size").options[document.getElementById("size").selectedIndex].value;
-        const index = document.getElementById("index").textContent;
-        
-        const response = await fetch(`https://localhost:9000/v1/Product/${categoryId}/${orderBy}/${size}/${index}`);
- 
-        const result = await response.json();
-        
-        if(!result.succeeded && result.statusCode !== 404) throw new Error(result.title); 
-        
-        if(result.statusCode === 404) return null;
-        
-        return result.content;
-        
-    } catch (e) {
-        throw e;
-    }
-
-}
-
-const enableDisablePrivousNextBtns = () => {
-
-    try {
-        document.getElementById("btnPrevious").className = "btn btn-outline-light";
-        document.getElementById("btnNext").className = "btn btn-outline-light";
-        document.getElementById("index").textContent = currentIndex;
-
-        if (indexesCount === 0) {
-            document.getElementById("btnPrevious").className = "btn btn-outline-light disabled";
-            document.getElementById("btnNext").className = "btn btn-outline-light disabled";
-            document.getElementById("index").textContent = "0";
-            currentIndex = 0;
-        }
-
-        if (currentIndex === 1) {
-            document.getElementById("btnPrevious").className = "btn btn-outline-light disabled";
-        }
-
-        if (currentIndex === indexesCount) {
-            document.getElementById("btnNext").className = "btn btn-outline-light disabled";
-        }
-    } catch (e) {
-        throw e;
-    }
-}
-
 const thereAreNotProducts = () => {
 
     try {
         const container = document.getElementById("productsContainer");
 
+        container.className = "text-center";
+        
         while(container.firstChild){
             container.removeChild(container.firstChild);
         }
@@ -337,7 +243,7 @@ const thereAreNotProducts = () => {
 
         const text = document.createElement("p");
         text.className = "text-white text-center fs-4";
-        text.textContent = "There are no exercises for the specific category";
+        text.textContent = "There are no products";
 
         bodyCard.appendChild(text);
         bodyCard.appendChild(hr);
@@ -385,30 +291,56 @@ const addProducts = (products) =>{
 
             let title = document.createElement("h5");
             title.className = "card-title";
-            title.textContent = product.productName;
+            title.textContent = product.name;
+
+            let price = document.createElement("p");
+            price.className = "text-white";
+            price.textContent = product.price;
+
+            let quantity = document.createElement("p");
+            quantity.className = "text-white";
+            quantity.textContent = `Quantity: ${product.quantity}`;
+
+            let total = document.createElement("p");
+            total.className = "text-white";
+            total.textContent = `Total: ${(product.price*product.quantity).toFixed(2)}`;
+
+            let status = document.createElement("p");
+            status.className = "text-white";
+            status.textContent = `Status: ${product.status}`;
  
-            let text = document.createElement("p");
-            text.className = "text-white";
-            text.textContent = product.productPrice;
+            let btnLocation = document.createElement("btn");
+            btnLocation.className = "btn btn-outline-primary";
+            btnLocation.textContent = "See location";
+            btnLocation.setAttribute("type", "button");
+            btnLocation.setAttribute("data-bs-toggle", "modal");
+            btnLocation.setAttribute("data-bs-target", "#exampleModal");
+            btnLocation.addEventListener("click", () => {init({lat: parseFloat(product.lat), lng: parseFloat(product.lng)})})
             
-            let cardFooter = document.createElement("div");
-            cardFooter.className = "card-footer";
-
-            let btn1 = document.createElement("button");
-            btn1.className = "btn btn-primary";
-            btn1.textContent = "View";
-            btn1.addEventListener(("click"), () => location.href = `https://localhost:9000/v1/Product/${website.websiteId}`);
-
-            
-            cardFooter.appendChild(btn1);
+            let btn = document.createElement("btn");
+            btn.className = "btn btn-primary"
+            btn.textContent = "Complete purchase";
+            btn.addEventListener("click", async () =>{
+                await changeStatus(btn.id);
+            });
             
             cardBody.appendChild(title);
-            cardBody.appendChild(text);
-            
+            cardBody.appendChild(price);
+            cardBody.appendChild(quantity);
+            cardBody.appendChild(total);
+            cardBody.appendChild(status);
+            cardBody.appendChild(btnLocation);
+            if(product.status === 'Process')
+            {
+                cardBody.appendChild(document.createElement("br"));
+                cardBody.appendChild(document.createElement("br"));
+                
+                cardBody.appendChild(btn);
+            }
+
             card.appendChild(image);
             card.appendChild(hr);
             card.appendChild(cardBody);
-            card.appendChild(cardFooter);
 
             col.appendChild(card);
 
@@ -419,18 +351,65 @@ const addProducts = (products) =>{
     }
 }
 
+const getProducts = async () =>{
+    try {
+
+        const type = "costumer";
+        const category = document.getElementById("categories").options[document.getElementById("categories").selectedIndex].value;
+        const size = document.getElementById("size").options[document.getElementById("size").selectedIndex].value;
+        const index = document.getElementById("index").textContent;
+
+        const response = await fetch( `https://localhost:9000/v1/Purchases/${type}/${category}/${size}/${index}`)
+
+        const result = await response.json();
+
+        if(!result.succeeded && result.statusCode !== 404) throw new Error(result.title);
+
+        return (result.succeeded)?result.content:null;
+
+    }catch (e){
+        throw e;
+    }
+}
+
 const getIndexes = async () => {
     try {
 
         const categoryId = document.getElementById("categories").options[document.getElementById("categories").selectedIndex].value;
         const size = document.getElementById("size").options[document.getElementById("size").selectedIndex].value;
-        
-        const resp = await fetch(`https://localhost:9000/v1/Product/IndexesCount/${categoryId}/${size}`);
+
+        const resp = await fetch(`https://localhost:9000/v1/Purchase/IndexesCount/${categoryId}/${size}`);
 
         const result = await resp.json();
 
         return (result.succeeded) ? result.content.count : 0;
 
+    } catch (e) {
+        throw e;
+    }
+}
+
+const enableDisablePrivousNextBtns = () => {
+
+    try {
+        document.getElementById("btnPrevious").className = "btn btn-outline-light";
+        document.getElementById("btnNext").className = "btn btn-outline-light";
+        document.getElementById("index").textContent = currentIndex;
+
+        if (indexesCount === 0) {
+            document.getElementById("btnPrevious").className = "btn btn-outline-light disabled";
+            document.getElementById("btnNext").className = "btn btn-outline-light disabled";
+            document.getElementById("index").textContent = "0";
+            currentIndex = 0;
+        }
+
+        if (currentIndex === 1) {
+            document.getElementById("btnPrevious").className = "btn btn-outline-light disabled";
+        }
+
+        if (currentIndex === indexesCount) {
+            document.getElementById("btnNext").className = "btn btn-outline-light disabled";
+        }
     } catch (e) {
         throw e;
     }
@@ -453,16 +432,65 @@ const updateProducts = async () => {
     }
 }
 
+const changeStatus = async (id) =>{
+    Swal.fire({
+        background : 'black',
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, complete it!',
+        customClass : {
+            'title':'text-white',
+            'text':'text-white'
+        }
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            
+            const response = await fetch(`https://localhost:9000/v1/Purchase`,
+                {
+                    method:'PATCH',
+                    body:JSON.stringify({purchaseId : id})
+                });
+            
+            const result = await response.json();
+            
+            if(result.succeeded){
+                Swal.fire({
+                    background : 'black',
+                    title: 'Success',
+                    text: "The purchase has been completed!",
+                    icon: 'success',
+                    customClass : {
+                        'title':'text-white',
+                        'text':'text-white'
+                    }
+                });
+            }else{
+                Swal.fire({
+                    background : 'black',
+                    title: 'Error',
+                    text: `The purchase could not be completed due to ${result.title}`,
+                    icon: 'error',
+                    customClass : {
+                        'title':'text-white',
+                        'text':'text-white'
+                    }
+                });
+            }
+        }
+    })
+}
 
 window.addEventListener("load", async () => {
     try {
-        await addProductCategoriesAsync();
         await updateProducts();
     } catch (e) {
         Swal.fire({ background: 'black', icon: 'error', title: 'Error', text: e.message, customClass: { 'title': 'text-white', 'text': 'text-white' } })
     }
 });
- 
 
 document.getElementById("btnPrevious").addEventListener("click", async () => {
 
@@ -492,5 +520,5 @@ document.getElementById("btnNext").addEventListener("click", async () => {
     } catch (e) {
         Swal.fire({ background: 'black', icon: 'error', title: 'Error', text: e.message, customClass: { 'title': 'text-white', 'text': 'text-white' } })
     }
- 
+
 });

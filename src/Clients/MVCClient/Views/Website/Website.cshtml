@@ -40,7 +40,7 @@
 			</div>
 			<div class="col">
 				<label class="sr-only fs-4 text-white">Order by</label>
-				<select id="orderBy" class="form-control bg-dark text-white">
+				<select id="orderBy" class="form-control bg-dark text-white" onchange="updateProducts()">
 					<option value="cheap">Cheapest to most expensive</option>
 					<option value="expensive">Most expensive to cheapest</option>
 					<option value="name">Name</option>
@@ -48,10 +48,10 @@
 			</div>
 			<div class="col">
 				<label class="sr-only fs-4 text-white">Size</label>
-				<select id="size" class="form-control bg-dark text-white">
+				<select id="size" class="form-control bg-dark text-white" onchange="updateProducts()">
 					<option value="5">5</option>
 					<option value="10">10</option>
-					<option value="All">All</option>
+					<option value="0">All</option>
 				</select>
 			</div>
 		</div>

@@ -53,25 +53,51 @@ namespace MVCClient.Controllers
             return View();
         }
 
-        [HttpGet("/v1/Websites")]
-        public async Task<string> GetAllOwnerWebsites()
+        [HttpGet("/v1/Websites/{type}")]
+        public async Task<string> GetAllOwnerWebsites(string type)
         {
-            var content = new[]
+            if (type == "name")
             {
-                new {websiteId = new Guid("bec567d7-0009-4762-85f6-3b967602dfa2"), websiteName = "MyFirstPage"},
-                new {websiteId = new Guid("5aa4529f-2467-410b-82c0-5d6ba69d8490"), websiteName = "MySecondPage"},
-                new {websiteId = new Guid("2351cf51-0795-4ba8-936e-cc959f495e43"), websiteName = "MyThirdPage"}
-            };
+                
+                var content = new[]
+                {
+                    new {websiteId = new Guid("bec567d7-0009-4762-85f6-3b967602dfa2"), websiteName = "MyFirstPage"},
+                    new {websiteId = new Guid("5aa4529f-2467-410b-82c0-5d6ba69d8490"), websiteName = "MySecondPage"},
+                    new {websiteId = new Guid("2351cf51-0795-4ba8-936e-cc959f495e43"), websiteName = "MyThirdPage"}
+                };
+                
+                var result = new
+                {
+                    content = content,
+                    statusCode = 200,
+                    title = "All websites have been achieved!",
+                    succeeded = true
+                };
 
-            var result = new
+                return JsonConvert.SerializeObject(result);
+            }
+            else
             {
-                content = content,
-                statusCode = 200,
-                title = "All websites have been achieved!",
-                succeeded = true
-            };
+                
+                var content = new[]
+                {
+                    new {websiteId = new Guid("bec567d7-0009-4762-85f6-3b967602dfa2"),description = "Fake description for first page", websiteName = "MyFirstPage", imageUrl = "https://media.gettyimages.com/vectors/browser-window-vector-id975157976?s=612x612"},
+                    new {websiteId = new Guid("5aa4529f-2467-410b-82c0-5d6ba69d8490"),description = "Fake description for second page", websiteName = "MySecondPage", imageUrl = "https://i.ytimg.com/vi/-hIVAyoAGGc/maxresdefault.jpg"},
+                    new {websiteId = new Guid("2351cf51-0795-4ba8-936e-cc959f495e43"),description = "Fake description for third page", websiteName = "MyThirdPage", imageUrl = "https://image.shutterstock.com/image-vector/internet-browser-window-open-social-260nw-743964994.jpg"}
+                };
+                
+                var result = new
+                {
+                    content = content,
+                    statusCode = 200,
+                    title = "All websites have been achieved!",
+                    succeeded = true
+                };
 
-            return JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
+            }
+
+           
         }
 
         [HttpGet("/v1/Website/Search")]
@@ -162,6 +188,19 @@ namespace MVCClient.Controllers
 
             return JsonConvert.SerializeObject(result);
         }
+
+        [HttpGet("/v1/Website/Update")]
+        public IActionResult UpdateWebsite()
+        {
+            return View();
+        }
+
+        [HttpPatch("/v1/Website/Update")]
+        public IActionResult UpdateWebsite(UpdateWebsiteModel model)
+        {
+            throw new NotImplementedException();
+        }
+        
         
     }
 }

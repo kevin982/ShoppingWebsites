@@ -232,7 +232,7 @@ function addMarker(position) {
     let coords = JSON.parse(JSON.stringify(position));
 
     document.getElementById("location").value = `${coords.lat} ${coords.lng}`;
- 
+
     if (markers.length > 0) deleteMarkers();
 
     const marker = new google.maps.Marker({
@@ -310,12 +310,38 @@ const addCategories = async () => {
     }
 }
 
+const addWebsites = async () =>{
+    try {
+
+        const result = await fetch("https://localhost:9000/v1/Websites/name");
+
+        const response = await result.json();
+
+        if (!response.succeeded) throw new Error(response.title);
+
+        const websites = document.getElementById("websites");
+
+        for (let i = 0; i < response.content.length; i++) {
+            const option = document.createElement("option");
+            option.className="text-white"
+            option.setAttribute("value", response.content[i].websiteId);
+            option.textContent = response.content[i].websiteName;
+
+            websites.append(option);
+        }
+
+    } catch (e) {
+        throw e;
+    }
+}
+
 window.addEventListener("load", async () => {
 
     try {
-
         await addCategories();
-
+        
+        await addWebsites();
+        
     } catch (e) {
         Swal.fire({ background: 'black', icon: 'error', title: 'We could add the website categories', text: e.message, customClass: {'title':'text-white', 'text':'text-white'}})
     }
@@ -326,7 +352,4 @@ document.getElementById("physicalLocationCheckbox").addEventListener("change", (
 
     (value) ? addMap() : removeMap();
 });
-
-
-
  

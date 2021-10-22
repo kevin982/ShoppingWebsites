@@ -1,7 +1,7 @@
 ﻿
 const getWebsites = async() =>{
     try {
-        const response = await fetch(`https://localhost:9000/v1/Websites`);
+        const response = await fetch(`https://localhost:9000/v1/Websites/name`);
 
         return await response.json();
 

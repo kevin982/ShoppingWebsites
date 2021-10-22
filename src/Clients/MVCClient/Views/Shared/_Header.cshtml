@@ -1,38 +1,110 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor _httpContext;
-
-<nav class="navbar navbar-expand-lg navbar-light bg-dark text-white">
-	<div class="container">
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon bg-white"></span>
-		</button>
-		<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-			<div class="navbar-nav">
-
-				<a class="nav-link text-white" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Http
+@using System.Security.Claims;
+@using MVCClient.Services;
+@inject IUserService _userService;
 
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        
+        @if (_httpContext.HttpContext.User.Identity.IsAuthenticated)
+        {
+            string accessToken = await _httpContext.HttpContext.GetTokenAsync("access_token");
 
-				@if (_httpContext.HttpContext.User.Identity.IsAuthenticated)
-				{
-					<a class="nav-link text-white">Bla</a>
-					<a class="nav-link text-white">Bla</a>
-					<a class="nav-link text-white">Bla</a>
-					<a class="nav-link text-white">Bla</a>
-					<a class="nav-link text-white">Bla</a>
-					<a class="nav-link text-white">Bla</a>
-					 
-				}
-				else
-				{
-					<a class="nav-link text-white" aria-current="page">Bla</a>
-					<a class="nav-link text-white">Bla</a>
-					<a class="nav-link text-white">Bla</a>
-					 
-				}
-			</div>
-		</div>
-	</div>
-</nav> 
+            if (_userService.ContainsRole(accessToken, "costumer"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Website" asp-action="SearchWebsite" aria-current="page">Search website</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Cart" asp-action="Cart" aria-current="page">Shopping Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Website" asp-action="SavedWebsites">Saved Pages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Purchase" asp-action="CostumerPurchase">Purchases</a>
+                </li>
+            }
+            else if (_userService.ContainsRole(accessToken, "owner"))
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Websites
+                    </a>
+                    <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item text-white" asp-controller="Website" asp-action="CreateWebsite">Create</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-white" asp-controller="Website" asp-action="UpdateWebsite">Update</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="ProductCategory" asp-action="CreateProductCategory" aria-current="page">Create Website Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="WebsiteCategory" asp-action="CreateWebsiteCategory" aria-current="page">Create Website Category</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Products
+                    </a>
+                    <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item text-white" asp-controller="Product" asp-action="CreateProduct">Create</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-white" asp-controller="Product" asp-action="UpdateProductStack">Update</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-white" asp-controller="Product" asp-action="RemoveProducts">Delete</a>
+                        </li>
+                    </ul>
 
- 
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Statistics" asp-action="Statistics" aria-current="page">Website statistics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Purchase" asp-action="OwnerPurchase">Purchases</a>
+                </li>
+            }
+            else if (_userService.ContainsRole(accessToken, "admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="WebsiteCategory" asp-action="CreateWebsiteCategory" aria-current="page">Create Website Category</a>
+                </li>
+            }
+            
+            <li class="nav-item">
+                <a class="nav-link active" asp-controller="Account" asp-action="Logout" aria-current="page">Logout</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white" aria-current="page" asp-controller="Account" asp-action="SignUp">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Account" asp-action="SignIn">Sign In</a>
+
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Account" asp-action="ForgetPassword">Forget Password</a>
+            </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

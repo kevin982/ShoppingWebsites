@@ -57,7 +57,7 @@
 							{
 								<li class="list-group-item bg-dark text-white">
 									<!-- Custom content-->
-									<div class="media align-items-lg-center flex-column flex-lg-row p-3">
+									<div class="media align-items-lg-center flex-column flex-lg-row p-3" id="orderContainer-@item["id"]">
 										<div class="media-body order-2 order-lg-1">
 											<div class="d-flex align-items-center justify-content-between mt-1">
 												<h5 class="mt-0 font-weight-bold mb-2">@item["name"]</h5>
@@ -70,7 +70,8 @@
 												<div class="mt-3"><p id="total-@item["id"]">Total: @total</p></div>
 											}
 										</div><img src="@item["image"]" alt="Generic placeholder image" width="300" class="ml-lg-5 order-1 order-lg-2">
-										<div class="mt-4"><button onclick="buy('@item["id"]','@item["price"]')" class="btn btn-outline-light btn-lg">Buy</button></div>
+										<input id="location-@item["id"]" type="text" hidden/>
+										<div class="mt-4" id="btnContainer-@item["id"]"><button onclick="startOrder('@item["id"]','@item["price"]')" class="btn btn-outline-light btn-lg" id="btnOrder-@item["id"]">Order</button></div>
 									</div>
 									<!-- End -->
 								</li>
@@ -78,10 +79,8 @@
 								<hr class="bg-white" />
 							}
 						}
-
-
+						
 						<!-- list group item-->
-
 
 				</ul>
 					<!-- End -->
@@ -95,3 +94,4 @@
 }
 
 <script src="/js/cart.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu23M7yYmFTx871zv8EjuRDoHJoCYBJ3M&callback=myMap"></script>
