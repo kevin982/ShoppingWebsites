@@ -1,0 +1,104 @@
+﻿@model IdentityMicroservice.Models.SignUpRequestModel
+
+@{
+    Layout = "_Layout";
+
+}
+
+@{
+    if (ViewBag.Errors is not null && ViewBag.UserCreated is not null)
+    {
+        if (ViewBag.UserCreated)
+        {
+            <div class="alert alert-success">
+                <h4>The account has been created successfully!</h4>
+                <a href="https://localhost:9000">Go to home!</a>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <h4>The account could not be created because of @ViewBag.Errors</h4>
+                <a href="https://localhost:9000">Go to home!</a>
+            </div>
+        }
+    }
+
+}
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+	<path fill="#000b76" fill-opacity="1" d="M0,160L120,138.7C240,117,480,75,720,74.7C960,75,1200,117,1320,138.7L1440,160L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path>
+</svg>
+
+<div class="container form-container bg-dark">
+    <div class="row">
+
+        <div class="form col-6">
+
+            <h1 class="text-white">Create an account</h1>
+
+
+            <form method="post" asp-action="SignUp" class="mt-5">
+
+                <div class="illustration">
+                    <i class="icon ion-ios-locked-outline"></i>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="UserName" class="control-label text-white"></label>
+                    <input asp-for="UserName" class="form-control bg-dark text-white" placeholder="User Name">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group mb-4">
+                    <label asp-for="Email" class="control-label text-white"></label>
+                    <input asp-for="Email" class="form-control bg-dark text-white" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group mb-4">
+                    <label asp-for="Password" class="control-label text-white"></label>
+                    <input asp-for="Password" class="form-control bg-dark text-white" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group mb-4">
+                    <label asp-for="ConfirmPassword" class="control-label text-white"></label>
+                    <input asp-for="ConfirmPassword" class="form-control bg-dark text-white" placeholder="Confirm Password">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="IsCostumer" class="form-check-input" id="isCostumer" type="checkbox" checked="true">
+                    <label asp-for="IsCostumer" class="form-check-label text-white">Costumer</label>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="IsOwner" class="form-check-input" id="isOwner" type="checkbox">
+                    <label asp-for="IsOwner" class="form-check-label text-white">Owner</label>
+                </div>
+
+
+                <div class="form-group">
+                    <button class="btn btn-primary btn-lg" type="submit" id="btnSubmit">Sign Up</button>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="col-6">
+            <img class="fluid" src="~/images/Online shopping _Outline.png"/>
+        </div>
+
+    </div>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320">
+	<path fill="#000b76" fill-opacity="1" d="M0,192L120,202.7C240,213,480,235,720,229.3C960,224,1200,192,1320,176L1440,160L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+</svg>
+
+<script src="~/js/signUp.js"></script>

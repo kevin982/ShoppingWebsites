@@ -1,0 +1,77 @@
+﻿
+body {
+    height: 100%;
+    font-size: 1rem;
+    font-family: 'Big Shoulders Stencil Display', cursive;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: black;
+}
+
+
+
+.btn-fill-animation {
+    width: 13rem;
+    height: 5rem;
+    border: none;
+    color: white;
+    background-color: #3F3F3F;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 0 #6600cc;
+    transition: ease-out 0.3s;
+    font-size: 1.2rem;
+    outline: none;
+}
+
+.btn-fill-animation:hover {
+    box-shadow: inset 13rem 0 0 0 #6600cc;
+    cursor: pointer;
+}
+
+.gradient-background {
+    background: rgb(92,23,148);
+    background: linear-gradient(90deg, rgba(92,23,148,1) 0%, rgba(151,109,242,1) 100%);
+}
+
+
+#planner #change_title_dialog, #planner #confirm_delete_dialog {
+    background-color: #eee;
+    color: black;
+    border: 1px solid black;
+    padding: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -150px;
+    width: 300px;
+}
+
+#planner .dialog_buttons {
+    text-align: right;
+}
+
+.routine-app-background {
+    background: rgb(92,23,148);
+    background: linear-gradient(90deg, rgba(92,23,148,1) 0%, rgba(151,109,242,1) 100%);
+}
+
+.btn-fill-animation {
+    width: 13rem;
+    height: 5rem;
+    border: none;
+    color: white;
+    background-color: #3F3F3F;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 0 #6600cc;
+    transition: ease-out 0.3s;
+    font-size: 1.2rem;
+    outline: none;
+}
+
+.btn-fill-animation:hover {
+    box-shadow: inset 13rem 0 0 0 #6600cc;
+    cursor: pointer;
+}
