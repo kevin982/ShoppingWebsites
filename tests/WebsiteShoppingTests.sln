@@ -1,22 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31815.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServerTests", "IdentityServerTests\IdentityServerTests.csproj", "{EC79699F-8907-479A-922F-27680D021397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerTests", "IdentityServerTests\IdentityServerTests.csproj", "{EC79699F-8907-479A-922F-27680D021397}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebsitesCategoryTests", "WebsitesCategoryTests\WebsitesCategoryTests.csproj", "{AA464153-B3BB-47D2-8CA3-663D5C53DDD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EC79699F-8907-479A-922F-27680D021397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC79699F-8907-479A-922F-27680D021397}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC79699F-8907-479A-922F-27680D021397}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC79699F-8907-479A-922F-27680D021397}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA464153-B3BB-47D2-8CA3-663D5C53DDD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA464153-B3BB-47D2-8CA3-663D5C53DDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA464153-B3BB-47D2-8CA3-663D5C53DDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA464153-B3BB-47D2-8CA3-663D5C53DDD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CEC09E4D-2F22-4DA1-A1A3-3312BED50A6D}
 	EndGlobalSection
 EndGlobal
