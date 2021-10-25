@@ -21,6 +21,7 @@ namespace CategoryWebsite_MS
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:8003", "https://localhost:9003");
                 });
     }
 }
