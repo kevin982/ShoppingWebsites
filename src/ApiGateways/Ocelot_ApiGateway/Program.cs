@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Ocelot
+namespace Ocelot_ApiGateway
 {
     public class Program
     {
@@ -20,7 +20,13 @@ namespace Ocelot
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:8001", "https://localhost:9001");
+                    webBuilder.ConfigureAppConfiguration(config =>
+                    {
+                        config.AddJsonFile($"ocelot.{environment}.json");
+                    });
                 });
     }
 }
