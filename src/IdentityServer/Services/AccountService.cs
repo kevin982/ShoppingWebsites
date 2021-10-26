@@ -172,7 +172,7 @@ namespace IdentityMicroservice.Services
                 string subject = "Reset Password";
                 List<Attachment> attachments = new();
                 List<string> mails = new() { model.UserEmail };
-                List<(string, string)> values = new() { ("Link", string.Format(Configuration.GetValue<string>("AppsUrls:Self") + $"/Account/ResetPassword?id={user.Id}&token={token}")), ("UserName", user.UserName) };
+                List<(string, string)> values = new() { ("Link", string.Format(Configuration["AppsUrls:Self"] + $"/Account/ResetPassword?id={user.Id}&token={token}")), ("UserName", user.UserName) };
                 await SendEmailAsync(subject, htmlPath, mails, attachments, values);
             }
             catch (Exception)

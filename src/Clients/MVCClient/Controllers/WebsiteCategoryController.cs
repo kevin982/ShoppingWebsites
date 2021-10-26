@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MVCClient.Models;
+using MVCClient.Services;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +16,14 @@ namespace MVCClient.Controllers
     [Controller]
     public class WebsiteCategoryController : Controller
     {
+        private readonly IRequestSender _requestSender;
+        private readonly ILogger<WebsiteCategoryController> _logger;
+        public WebsiteCategoryController(IRequestSender requestSender, ILogger<WebsiteCategoryController> logger)
+        {
+            _requestSender = requestSender;
+            _logger = logger;
+        }
+
         [HttpGet("/v1/WebsiteCategory")]
         public async Task<IActionResult> CreateWebsiteCategory()
         {
@@ -23,12 +35,21 @@ namespace MVCClient.Controllers
         {
             try
             {
-                throw new NotImplementedException();
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                ViewBag.Result = (JObject)await _requestSender.SendRequestAsync("POST", "/v1/WebsiteCategory", accessToken, true, model);
             }
             catch (Exception)
             {
-                throw new NotImplementedException();
+                JObject error = new();
+
+                error.Add("succeeded", false);
+                error.Add("title", "Internal Error");
+
+                ViewBag.Result = error;
             }
+
+            return View();
         }
 
         [HttpGet("/v1/WebsiteCategories")]
@@ -36,26 +57,23 @@ namespace MVCClient.Controllers
         {
             try
             {
-                //Here I must implement the actual code
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                
-                var content = new[]
-                {
-                   new { categoryId = new Guid("bec567d7-0009-4762-85f6-3b967602dfa2"), categoryName = "Clothes" },
-                   new { categoryId = new Guid("5aa4529f-2467-410b-82c0-5d6ba69d8490"), categoryName = "Sport" },
-                   new { categoryId = new Guid("2351cf51-0795-4ba8-936e-cc959f495e43"), categoryName = "Shoes" }
-                };
-
-                var result = new { content = content, statusCode = 200, succeeded = true, title = "The website categories were reached!"};
-
-                return JsonSerializer.Serialize(result);    
-
-
+                return (string)await _requestSender.SendRequestAsync("GET", "/v1/WebsiteCategory", accessToken);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                _logger.LogError($"An exception happend at {DateTime.UtcNow}. Error message {ex.Message}");
+
+                var error = new
+                {
+                    succeeded = false,
+                    title = "Internal error",
+                    statusCode = 500
+                };
+
+                return JsonSerializer.Serialize(error);
             }
         }
     }

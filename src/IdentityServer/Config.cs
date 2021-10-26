@@ -21,7 +21,7 @@ namespace IdentityMicroservice
        new List<ApiScope>
        {
             new ApiScope("websitesMs.all", "All crud operations for the website micro service"),
-            new ApiScope("categoryWebsiteMs.all", "All crud operations for the category website micro service"),
+            new ApiScope("websiteCategoryMs.all", "All crud operations for the category website micro service"),
             new ApiScope("productsMs.all", "All crud operations for the products micro service"),
             new ApiScope("categoryProductsMs.all", "All crud operations for the category products micro service"),
             new ApiScope("reviewsMs.all", "All crud operations for the reviews micro service"),
@@ -67,7 +67,7 @@ namespace IdentityMicroservice
                     IdentityServerConstants.StandardScopes.Profile,
                     "role",
                     "websitesMs.all",
-                    "categoryWebsiteMs.all",
+                    "websiteCategoryMs.all",
                     "productsMs.all",
                     "categoryProductsMs.all",
                     "reviewsMs.all",

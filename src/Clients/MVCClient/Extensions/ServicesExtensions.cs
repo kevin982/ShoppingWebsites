@@ -14,7 +14,7 @@ namespace MVCClient.Extensions
         {
             services.AddMyAuthentication(Configuration);
 
-            services.AddOcelotClient();
+            services.AddClients();
 
             services.AddMyOwnServices();
 
@@ -46,7 +46,7 @@ namespace MVCClient.Extensions
                     options.Scope.Add("role");
                     
                     options.Scope.Add("websitesMs.all");
-                    options.Scope.Add("categoryWebsiteMs.all");
+                    options.Scope.Add("websiteCategoryMs.all");
                     options.Scope.Add("productsMs.all");
                     options.Scope.Add("categoryProductsMs.all");
                     options.Scope.Add("reviewsMs.all");
@@ -69,15 +69,20 @@ namespace MVCClient.Extensions
             return services;
         }
  
-        private static IServiceCollection AddOcelotClient(this IServiceCollection services)
+        private static IServiceCollection AddClients(this IServiceCollection services)
         {
-            
+            services.AddHttpClient("Ocelot", options =>
+            {
+                options.BaseAddress = new Uri("https://localhost:9001");
+            });
+
             return services;
         }
 
         private static IServiceCollection AddMyOwnServices(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRequestSender, RequestSender>();
             return services;
         }
     }

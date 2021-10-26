@@ -1,0 +1,25 @@
+-MVC Client: http: 8000:80  https: 9000:443
+
+-ApiGateway: http: 8001:81  https: 9001:444
+
+-Identity Server: http: 8002:82  https: 9002:445
+
+-Category Website microservice: http: 8003:83  https: 9003:446
+
+-Websites microservice: http: 8004:84  https: 9004:446
+
+-Category Products microservice: http: 8005:85  https: 9005:447
+
+-Products microservice: http: 8006:86  https: 9006:448
+
+-Reviews microservice: http: 8007:87  https: 9007:449
+
+-Shopping Cart microservice: http: 8008:88  https: 9008:450
+
+-Saved websites microservice: http: 8009:89  https: 9009:451
+
+-Website statistics microservice: http: 8010:90  https: 9010:452
+
+-Search websites microservice: http: 8011:91  https: 9011:453
+
+-Purchase microservice: http: 8012:92  https: 9012:454

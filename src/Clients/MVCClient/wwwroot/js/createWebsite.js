@@ -299,8 +299,8 @@ const addCategories = async () => {
         for (let i = 0; i < response.content.length; i++) {
             const option = document.createElement("option");
             option.className="text-white"
-            option.setAttribute("value", response.content[i].categoryId);
-            option.textContent = response.content[i].categoryName;
+            option.setAttribute("value", response.content[i].websiteCategoryId);
+            option.textContent = response.content[i].websiteCategoryName;
 
             categories.append(option);
         }
